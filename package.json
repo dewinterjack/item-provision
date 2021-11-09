@@ -4,5 +4,8 @@
   "main": "index.js",
   "author": "Jack Dewinter",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "axios": "^0.24.0"
+  }
 }
