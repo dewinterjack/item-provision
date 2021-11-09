@@ -1,0 +1,8 @@
+{
+  "name": "item-provision",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jack Dewinter",
+  "license": "MIT",
+  "private": true
+}
