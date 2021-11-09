@@ -6,6 +6,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "request": "^2.88.2"
+    "axios": "^0.24.0"
   }
 }
