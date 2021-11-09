@@ -5,7 +5,8 @@ const itemDetails = require('./itemDetails');
 async function run() {
     const items = await getItemNames();
     const itemIds = await itemDetails.getItemIds(items);
-    console.log(itemIds);
+    const discordData = await itemDetails.getCustomData(itemIds);
+    // console.log(discordData);
 }
 
 async function getItemNames() {
