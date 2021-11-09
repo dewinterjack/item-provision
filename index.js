@@ -15,10 +15,24 @@ async function getItemNames() {
 }
 
 function getItemIds(items) {
-    return Promise.all(items.map(getItemId)).then((results) => {
-        const ids = results.map(result => result.data.Results[0].ID);
+    return Promise.all(items.map(getItemId)).then((searchResults) => {
+        const ids = searchResults.map(result => getFirstItemId(result.data.Results));
         return ids;
+    }, (reason) => {
+        throw `Failed to retrieve item from XIV API: ${reason}`
     })
+}
+
+function getFirstItemId(results) {
+    if(results.length === 0)
+    {
+        throw "No results found from XIV API";
+    }
+    if(results.length > 1) {
+        console.log(`More than one result found, using first result: ${results[0].Name}`);
+    }
+
+    return results[0].ID;
 }
 
 function getItemId(item) {
