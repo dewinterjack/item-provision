@@ -5,6 +5,9 @@
   "author": "Jack Dewinter",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "axios": "^0.24.0"
   }
