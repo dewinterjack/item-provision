@@ -51,6 +51,12 @@ const createCustomData = (marketResponse, itemIds) => {
         }
     });
     console.log(items);
+// Take this data and create a table for discord - give insights like: if listings is empty, say no items currently on sale
+
+    // return {
+    //     name: 
+    // unresolved items !
+    // }
 }
 
 module.exports = {
