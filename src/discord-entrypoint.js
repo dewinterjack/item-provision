@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, MessageEmbed } = require('discord.js');
 const { bold } = require('@discordjs/builders');
 const runner = require('./runner');
 
@@ -28,11 +28,20 @@ client.on('messageCreate', async message => {
 	if(mentioned && message.attachments.size > 0) {
 		const attachment = message.attachments.first();
 		console.log(attachment.url);
-		const data = await runner.run(attachment.url);
-		let reply = '';
-		data.forEach(item => reply += bold(item.name) + ': ' + item.minPrice + 'gil' + '\n');
+		const itemData = await runner.run(attachment.url);
+		const fields = itemData.map(item => { return {
+			name: item.name,
+			value: item.minPrice + ' gil'
+		}})
+		const embed = new MessageEmbed()
+			.setTitle('Item Provision')
+			.setURL('https://github.com/dewinterjack/item-provision')
+			.setDescription('Data gathered from XIV API')
+			.addFields(fields)
+			.setImage(attachment.url)
+			.setTimestamp();
 		const channel = client.channels.cache.get(message.channelId);
-		await channel.send(reply);
+		await channel.send({ embeds: [embed] });
 	}
 });
 
