@@ -5,4 +5,4 @@
 
 Set the correct environment variables first.
 
-`docker run --rm dewinterjack/item-provision -e DISCORD_TOKEN=$DISCORD_TOKEN -e CLIENT_ID=$CLIENT_ID`
+`docker run --rm -e DISCORD_TOKEN=$DISCORD_TOKEN -e CLIENT_ID=$CLIENT_ID` dewinterjack/item-provision
