@@ -12,6 +12,7 @@ WORKDIR /app
 
 COPY src src/
 COPY tesseract.sh .
+RUN mkdir data
 
 COPY package.json \
      yarn.lock \
