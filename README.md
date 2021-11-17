@@ -5,4 +5,4 @@
 
 Set the correct environment variables first.
 `docker build . -t item-provision`
-`docker run --rm item-provision -e DISCORD_TOKEN=$DISCORD_TOKEN`
+`docker run --rm item-provision -e DISCORD_TOKEN=$DISCORD_TOKEN -e CLIENT_ID=$CLIENT_ID`
