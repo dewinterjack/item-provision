@@ -10,12 +10,15 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+	console.log(interaction.isContextMenu());
+	if (!interaction.isContextMenu()) return;
 
-	const { commandName } = interaction;
+	console.log(interaction);
+	const { commandName, data } = interaction;
 
-	if (commandName === 'checkprice') {
+	if (commandName === 'Get Item Details') {
 		await interaction.deferReply();
+		console.log(data);
 		const discordData = await runner.run();
 		let message = '';
 		discordData.forEach(item => message += bold(item.name) + ': ' + item.minPrice + 'gil' + '\n');
