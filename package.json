@@ -6,7 +6,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node src/discord-entrypoint.js"
+    "start": "node src/discord-entrypoint.js",
+    "bashenv": "set -o allexport; source .env; set +o allexport"
   },
   "dependencies": {
     "axios": "^0.24.0",
