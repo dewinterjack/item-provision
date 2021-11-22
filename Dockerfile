@@ -19,5 +19,6 @@ COPY package.json \
      .
 
 RUN yarn install --frozen-lockfile
+RUN npm install pm2 -g
 
-CMD yarn start
+CMD pm2-runtime src/discord-entrypoint.js
