@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, MessageEmbed } = require('discord.js');
 const { bold } = require('@discordjs/builders');
 const runner = require('./runner');
 
@@ -10,30 +10,39 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+	if (!interaction.isContextMenu()) return;
 
-	const { commandName } = interaction;
-
-	if (commandName === 'checkprice') {
+	const message = interaction.options.getMessage('message');
+	if(interaction.commandName === 'Get Item Details' && message.attachments.size > 0) {
 		await interaction.deferReply();
-		const discordData = await runner.run();
-		let message = '';
-		discordData.forEach(item => message += bold(item.name) + ': ' + item.minPrice + 'gil' + '\n');
-		await interaction.editReply(message);
-	}
+		let attachment = message.attachments.first();
+		const reply = await createEmbedFromImage(attachment.url);
+		await interaction.editReply({ embeds: [reply] });
+	}	
 });
 
 client.on('messageCreate', async message => {
 	const mentioned = message.content.includes(`<@!${process.env.CLIENT_ID}>`);
 	if(mentioned && message.attachments.size > 0) {
-		const attachment = message.attachments.first();
-		console.log(attachment.url);
-		const data = await runner.run(attachment.url);
-		let reply = '';
-		data.forEach(item => reply += bold(item.name) + ': ' + item.minPrice + 'gil' + '\n');
-		const channel = client.channels.cache.get(message.channelId);
-		await channel.send(reply);
+		let attachment = message.attachments.first();
+		const reply = await createEmbedFromImage(attachment.url);
+		await channel.send({ embeds: [reply] });
 	}
 });
 
 client.login(process.env.DISCORD_TOKEN);
+
+const createEmbedFromImage = async (imageUrl) => {
+	let data = await runner.run(imageUrl);
+	const fields = data.map(item => { return {
+		name: item.name,
+		value: item.minPrice + ' gil'
+	}})
+	return new MessageEmbed()
+		.setTitle('Item Provision')
+		.setURL('https://github.com/dewinterjack/item-provision')
+		.setDescription('Data gathered from XIV API')
+		.addFields(fields)
+		.setImage(imageUrl)
+		.setTimestamp();
+}
