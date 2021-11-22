@@ -10,42 +10,39 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async interaction => {
-	console.log(interaction.isContextMenu());
 	if (!interaction.isContextMenu()) return;
 
-	console.log(interaction);
-	const { commandName, data } = interaction;
-
-	if (commandName === 'Get Item Details') {
+	const message = interaction.options.getMessage('message');
+	if(interaction.commandName === 'Get Item Details' && message.attachments.size > 0) {
 		await interaction.deferReply();
-		console.log(data);
-		const discordData = await runner.run();
-		let message = '';
-		discordData.forEach(item => message += bold(item.name) + ': ' + item.minPrice + 'gil' + '\n');
-		await interaction.editReply(message);
-	}
+		let attachment = message.attachments.first();
+		const reply = await createEmbedFromImage(attachment.url);
+		await interaction.editReply({ embeds: [reply] });
+	}	
 });
 
 client.on('messageCreate', async message => {
 	const mentioned = message.content.includes(`<@!${process.env.CLIENT_ID}>`);
 	if(mentioned && message.attachments.size > 0) {
-		const attachment = message.attachments.first();
-		console.log(attachment.url);
-		const itemData = await runner.run(attachment.url);
-		const fields = itemData.map(item => { return {
-			name: item.name,
-			value: item.minPrice + ' gil'
-		}})
-		const embed = new MessageEmbed()
-			.setTitle('Item Provision')
-			.setURL('https://github.com/dewinterjack/item-provision')
-			.setDescription('Data gathered from XIV API')
-			.addFields(fields)
-			.setImage(attachment.url)
-			.setTimestamp();
-		const channel = client.channels.cache.get(message.channelId);
-		await channel.send({ embeds: [embed] });
+		let attachment = message.attachments.first();
+		const reply = await createEmbedFromImage(attachment.url);
+		await channel.send({ embeds: [reply] });
 	}
 });
 
 client.login(process.env.DISCORD_TOKEN);
+
+const createEmbedFromImage = async (imageUrl) => {
+	let data = await runner.run(imageUrl);
+	const fields = data.map(item => { return {
+		name: item.name,
+		value: item.minPrice + ' gil'
+	}})
+	return new MessageEmbed()
+		.setTitle('Item Provision')
+		.setURL('https://github.com/dewinterjack/item-provision')
+		.setDescription('Data gathered from XIV API')
+		.addFields(fields)
+		.setImage(imageUrl)
+		.setTimestamp();
+}
