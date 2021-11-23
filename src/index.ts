@@ -14,7 +14,7 @@ client.on('interactionCreate', async interaction => {
 	const attachments = interaction.options.getMessage('message', true).attachments as Collection<string, MessageAttachment>;
 	if(attachments.size > 0) {
 		await interaction.deferReply();
-		const reply = await createEmbedFromImage(attachments[0]);
+		const reply = await createEmbedFromImage(attachments.first()?.url);
 		await interaction.editReply({ embeds: [reply] });
 	}
 });
