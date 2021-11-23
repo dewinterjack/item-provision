@@ -1,11 +1,11 @@
-const util = require('util');
+import util from 'util';
 const exec = util.promisify(require('child_process').exec);
-const itemDetails = require('./itemDetails');
+import { getItemIds, getCustomData } from './itemDetails';
 
-async function run(url) {
+async function run(url): Promise<any[]> {
     const items = await getItemNames(url);
-    const itemIds = await itemDetails.getItemIds(items);
-    const discordData = await itemDetails.getCustomData(itemIds);
+    const itemIds = await getItemIds(items);
+    const discordData = await getCustomData(itemIds);
     return discordData;
 }
 
@@ -15,6 +15,6 @@ async function getItemNames(url) {
     return results.filter(x => x !== '');
 }
 
-module.exports = {
+export {
     run
 }

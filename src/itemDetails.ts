@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const getItemIds = (items) => {
     return Promise.all(items.map(getItemId)).then((searchResults) => {
@@ -38,7 +38,7 @@ const getCustomData = async (itemIds) => {
 
 const createCustomData = (marketResponse, itemIds) => {
     const marketData = marketResponse.data;
-    const items = [];
+    const items: any = [];
     [ ...itemIds.keys() ].forEach(item => {
         if(!marketData.unresolvedItems.includes(item)) {
             let currentItem = marketData.items[item];
@@ -59,7 +59,7 @@ const createCustomData = (marketResponse, itemIds) => {
     // }
 }
 
-module.exports = {
+export {
     getItemIds,
     getCustomData
 }
