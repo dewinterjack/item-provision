@@ -1,4 +1,11 @@
-const axios = require('axios');
+import axios from 'axios';
+
+type Item = {
+    name: string,
+    id: number,
+    minimumPrice: number,
+    recentSale: any
+}
 
 const getItemIds = (items) => {
     return Promise.all(items.map(getItemId)).then((searchResults) => {
@@ -38,14 +45,14 @@ const getCustomData = async (itemIds) => {
 
 const createCustomData = (marketResponse, itemIds) => {
     const marketData = marketResponse.data;
-    const items = [];
+    const items: Item[] = [];
     [ ...itemIds.keys() ].forEach(item => {
         if(!marketData.unresolvedItems.includes(item)) {
             let currentItem = marketData.items[item];
             items.push({
                 name: itemIds.get(item),
                 id: item,
-                minPrice: currentItem.minPrice,
+                minimumPrice: currentItem.minPrice,
                 recentSale: currentItem.recentHistory[0]
             });
         }
@@ -59,7 +66,8 @@ const createCustomData = (marketResponse, itemIds) => {
     // }
 }
 
-module.exports = {
+export {
     getItemIds,
-    getCustomData
+    getCustomData,
+    Item
 }
