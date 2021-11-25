@@ -13,9 +13,11 @@ client.on('interactionCreate', async interaction => {
 	if (!interaction.isContextMenu() || interaction.commandName != 'Get Item Details') return;
 	const attachments = interaction.options.getMessage('message', true).attachments;
 
-	if(attachments instanceof Collection && attachments.size > 0){
+	if(attachments instanceof Collection){
 		await interaction.deferReply();
-		const reply = await createEmbedFromImage(attachments.first()?.url);
+		const attachment = attachments.first();
+		if(!attachment) { throw "Image does not have an attachment." }
+		const reply = await createEmbedFromImage(attachment.url);
 		await interaction.editReply({ embeds: [reply] });
 	}
 });

@@ -1,11 +1,11 @@
 import { MessageEmbed } from 'discord.js';
 import { run } from './runner';
 
-const createEmbedFromImage = async (imageUrl) => {
+const createEmbedFromImage = async (imageUrl: string) => {
 	let data = await run(imageUrl);
 	const fields = data.map(item => { return {
 		name: item.name,
-		value: item.minPrice + ' gil'
+		value: item.minimumPrice + ' gil'
 	}})
 	return new MessageEmbed()
 		.setTitle('Item Provision')
