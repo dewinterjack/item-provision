@@ -1,12 +1,13 @@
 import dotenv from 'dotenv';
 import { Client, Intents, MessageAttachment, Collection } from 'discord.js';
 import { createEmbedFromImage } from './embed';
+import { logger } from './logger';
 dotenv.config();
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 client.once('ready', () => {
-	console.log('Ready!');
+	logger.log('info', 'Ready!');
 });
 
 client.on('interactionCreate', async interaction => {
